@@ -44,7 +44,12 @@ export function ToastProvider({ children }) {
   return (
     <ToastCtx.Provider value={toast}>
       {children}
-      <div className="pointer-events-none fixed inset-x-0 bottom-4 z-[100] flex flex-col items-center gap-2 px-4 sm:bottom-6">
+      <div
+        className="pointer-events-none fixed inset-x-0 bottom-4 z-[100] flex flex-col items-center gap-2 px-4 sm:bottom-6"
+        role="region"
+        aria-label="Notifications"
+        aria-live="polite"
+      >
         <AnimatePresence>
           {toasts.map((t) => {
             const Icon = ICONS[t.type];
@@ -56,14 +61,15 @@ export function ToastProvider({ children }) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
                 transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                role="status"
                 className={`pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border px-4 py-3 shadow-lift backdrop-blur-xl ${STYLES[t.type]}`}
               >
-                <Icon className="mt-0.5 h-5 w-5 shrink-0" />
+                <Icon className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
                 <p className="flex-1 text-sm font-medium leading-snug">{t.msg}</p>
                 <button
                   onClick={() => dismiss(t.id)}
-                  className="shrink-0 rounded-md p-0.5 opacity-60 transition hover:opacity-100"
-                  aria-label="Dismiss"
+                  className="shrink-0 rounded-md p-0.5 opacity-60 transition hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-leaf-500"
+                  aria-label="Dismiss notification"
                 >
                   <X className="h-4 w-4" />
                 </button>

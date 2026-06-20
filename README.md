@@ -139,6 +139,59 @@ npm run preview
 
 ---
 
+## 🧪 Testing
+
+Verdant ships with a comprehensive test suite built on **Vitest** and **@testing-library/react**.
+
+```bash
+# Run all tests once (CI-friendly)
+npm test
+
+# Run tests in watch mode (during development)
+npm run test:watch
+
+# Generate a coverage report
+npm run test:coverage
+```
+
+### Test Coverage
+
+The suite covers **155 tests across 16 files**, organized by layer:
+
+| Layer | Files | Tests | Focus |
+|-------|-------|-------|-------|
+| **Data** | `engine`, `actions`, `challenges`, `badges` | 57 | Carbon math, ranking, XP/levels, badge conditions |
+| **Lib** | `security`, `format`, `chat` | 52 | Sanitization, exports, formatting, AI intent matching |
+| **Components** | `Navbar`, `Footer`, `Badge` | 14 | Rendering, links, props |
+| **Pages** | `Home`, `Onboard`, `Chat`, `Privacy`, `Challenges` | 18 | Routing, content, user flows |
+| **Integration** | `App` | 6 | Full app routing, layout presence |
+
+### Test Highlights
+
+- **Carbon engine**: verifies category math, household splitting (×1, ×4), Paris target deltas
+- **Security**: validates XSS sanitization (`<script>`, `<img onerror>`, entities) and data wipe
+- **AI chatbot**: checks intent classification for greetings, footprint queries, personalization
+- **Gamification**: asserts all 10 badge conditions trigger correctly at milestones
+- **Accessibility**: verifies `aria-label`s, button roles, and form associations render
+
+Tests live alongside source under `__tests__/` directories (e.g. `src/data/__tests__/`).
+
+---
+
+## ♿ Accessibility
+
+Verdant is built to be usable by everyone:
+
+- **Semantic HTML** — proper `<main>`, `<nav>`, `<header>`, `<footer>` landmarks
+- **Skip-to-content** link for keyboard users (visible on focus)
+- **Focus-visible** rings on every interactive element
+- **ARIA** roles and labels — `role="dialog"`, `aria-modal`, `aria-live`, `aria-checked`
+- **Reduced-motion** support — disables animations for users who prefer it
+- **Keyboard navigation** — Esc closes modals, Enter submits chat, Tab flows logically
+- **Color contrast** — WCAG AA compliant palette in both light and dark modes
+
+---
+
 ## 🔐 Security Model
 
 See [SECURITY.md](./SECURITY.md) for the full security documentation.
@@ -182,6 +235,8 @@ Values are rounded for clarity. Verdant is an **awareness tool**, not an audit-g
 | Framer Motion | Animations & transitions |
 | Lucide React | Icon library |
 | React Router 7 | Client-side routing |
+| Vitest | Unit/integration testing |
+| Testing Library | Component testing |
 
 **Zero additional runtime dependencies.** No backend, no database, no third-party services.
 

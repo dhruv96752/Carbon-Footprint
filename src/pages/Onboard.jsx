@@ -111,7 +111,7 @@ export default function Onboard() {
               </p>
 
               {/* Options */}
-              <div className="mt-6 space-y-3">
+              <div className="mt-6 space-y-3" role="radiogroup" aria-label={step.title}>
                 {step.options.map((opt, i) => {
                   const selected = answers[step.id] === opt.id;
                   return (
@@ -121,6 +121,8 @@ export default function Onboard() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.05 }}
                       onClick={() => select(opt.id)}
+                      role="radio"
+                      aria-checked={selected}
                       className={`w-full text-left rounded-xl border-2 px-5 py-4 transition-all duration-200 ${
                         selected
                           ? 'border-leaf-500 bg-leaf-50 dark:bg-leaf-950/40 shadow-glow'

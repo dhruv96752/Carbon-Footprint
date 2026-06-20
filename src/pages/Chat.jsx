@@ -140,6 +140,9 @@ export default function Chat() {
           ref={scrollRef}
           className="flex-1 space-y-4 overflow-y-auto py-4 no-scrollbar"
           style={{ minHeight: '300px', maxHeight: 'calc(100vh - 320px)' }}
+          role="log"
+          aria-label="Conversation with Sage"
+          aria-live="polite"
         >
           <AnimatePresence initial={false}>
             {messages.map((msg) => (
@@ -225,6 +228,7 @@ export default function Chat() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask Sage anything about carbon..."
+            aria-label="Message for Sage"
             className="input flex-1"
           />
           <button

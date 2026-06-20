@@ -9,7 +9,7 @@ export default [
     files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2022,
-      globals: globals.browser,
+      globals: { ...globals.browser, ...globals.node },
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
@@ -25,6 +25,13 @@ export default [
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    },
+  },
+  {
+    // Test files can use Node globals (global, process, __dirname)
+    files: ['**/*.{test,spec}.{js,jsx}', 'src/test/**/*.js'],
+    languageOptions: {
+      globals: { ...globals.node, ...globals.browser },
     },
   },
 ];
