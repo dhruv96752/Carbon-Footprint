@@ -55,6 +55,11 @@ function StreamingText({ text, speed = 18 }) {
   );
 }
 
+/**
+ * Sage chat page — a local AI chatbot that answers sustainability questions
+ * using keyword-scoring intent classification and a curated knowledge base.
+ * All processing happens in-browser with zero network calls.
+ */
 export default function Chat() {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -115,12 +120,12 @@ export default function Chat() {
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-leaf-400 to-leaf-700 text-white shadow-soft">
-              <Bot className="h-5 w-5" strokeWidth={2.5} />
+              <Bot className="h-5 w-5" strokeWidth={2.5} aria-hidden="true" />
             </div>
             <div>
               <h1 className="text-lg font-bold text-earth-950 dark:text-white">Sage</h1>
               <p className="text-xs text-earth-500 flex items-center gap-1">
-                <WifiOff className="h-3 w-3" /> Runs locally — 100% private
+                <WifiOff className="h-3 w-3" aria-hidden="true" /> Runs locally — 100% private
               </p>
             </div>
           </div>
@@ -130,7 +135,7 @@ export default function Chat() {
               className="grid h-9 w-9 place-items-center rounded-lg border border-earth-200 dark:border-earth-700 text-earth-500 transition hover:text-red-500 hover:border-red-300"
               aria-label="Clear chat"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4" aria-hidden="true" />
             </button>
           )}
         </div>
@@ -160,9 +165,9 @@ export default function Chat() {
                   }`}
                 >
                   {msg.role === 'user' ? (
-                    <User className="h-4 w-4 text-earth-600 dark:text-earth-300" />
+                    <User className="h-4 w-4 text-earth-600 dark:text-earth-300" aria-hidden="true" />
                   ) : (
-                    <Sparkles className="h-4 w-4 text-leaf-600 dark:text-leaf-400" />
+                    <Sparkles className="h-4 w-4 text-leaf-600 dark:text-leaf-400" aria-hidden="true" />
                   )}
                 </div>
                 <div
@@ -191,7 +196,7 @@ export default function Chat() {
               className="flex gap-3"
             >
               <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-leaf-100 dark:bg-leaf-950">
-                <Sparkles className="h-4 w-4 text-leaf-600 dark:text-leaf-400" />
+                <Sparkles className="h-4 w-4 text-leaf-600 dark:text-leaf-400" aria-hidden="true" />
               </div>
               <div className="rounded-2xl rounded-tl-md border border-earth-100 dark:border-earth-800 bg-white dark:bg-earth-900 px-4 py-3">
                 <div className="flex gap-1.5">
@@ -237,7 +242,7 @@ export default function Chat() {
             className="btn-primary disabled:opacity-40"
             aria-label="Send"
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
       </div>

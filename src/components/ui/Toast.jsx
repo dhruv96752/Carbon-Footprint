@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle2, AlertTriangle, Info, X, XCircle } from 'lucide-react';
 
 const ToastCtx = createContext(null);
+
+/** Hook to access the toast notification API from any component. */
 export const useToast = () => useContext(ToastCtx);
 
 const ICONS = {
@@ -18,6 +20,10 @@ const STYLES = {
   info: 'border-earth-200 bg-white text-earth-700 dark:border-earth-700 dark:bg-earth-900 dark:text-earth-200',
 };
 
+/**
+ * Toast notification system. Wraps children with a provider that exposes
+ * success / error / warning / info methods via the `useToast` hook.
+ */
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 

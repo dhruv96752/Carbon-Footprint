@@ -3,6 +3,10 @@ import { motion } from 'framer-motion';
 import { Home, Leaf } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 
+/**
+ * 404 page — rendered for any unmatched route. Light, on-brand, and offers
+ * a clear path back to the dashboard.
+ */
 export default function NotFound() {
   return (
     <PageTransition className="min-h-screen">
@@ -14,7 +18,7 @@ export default function NotFound() {
         >
           <p className="text-8xl font-extrabold text-gradient mb-4">404</p>
           <div className="mb-6">
-            <Leaf className="mx-auto h-12 w-12 text-leaf-400 animate-sway" />
+            <Leaf className="mx-auto h-12 w-12 text-leaf-400 animate-sway" aria-hidden="true" />
           </div>
           <h1 className="text-2xl font-bold text-earth-950 dark:text-white mb-2">
             Page not found
@@ -24,7 +28,7 @@ export default function NotFound() {
             Let's get you back to greener pastures.
           </p>
           <Link to="/" className="btn-primary">
-            <Home className="h-4 w-4" /> Return Home
+            <Home className="h-4 w-4" aria-hidden="true" /> Return Home
           </Link>
         </motion.div>
       </div>

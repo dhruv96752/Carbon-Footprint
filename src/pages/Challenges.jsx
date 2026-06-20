@@ -22,6 +22,10 @@ const ICON_MAP = {
   Leaf, Bike, Droplets, Recycle, PlugZap, ChefHat, Footprints, Lightbulb, ShoppingBag, Flame,
 };
 
+/**
+ * Weekly Challenges page — displays 3 rotating challenges with progress bars,
+ * log buttons, XP rewards, and completion stats. Challenges cycle weekly.
+ */
 export default function Challenges() {
   const { activeChallenges, increment, getProgress, isCompleted } = useChallenges();
   const { xp, level, streak, addXP } = useProfile();
@@ -44,7 +48,7 @@ export default function Challenges() {
         <Reveal>
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 pill bg-amber2-100 text-amber2-700 dark:bg-amber2-950 dark:text-amber2-300 mb-4">
-              <Flame className="h-3.5 w-3.5" /> {streak} day streak
+              <Flame className="h-3.5 w-3.5" aria-hidden="true" /> {streak} day streak
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-earth-950 dark:text-white mb-3">
               Weekly Challenges
@@ -97,7 +101,7 @@ export default function Challenges() {
                       ? 'bg-amber2-100 dark:bg-amber2-950'
                       : 'bg-leaf-100 dark:bg-leaf-950'
                   }`}>
-                    <Icon className={`h-6 w-6 ${done ? 'text-amber2-600' : 'text-leaf-600'}`} />
+                    <Icon className={`h-6 w-6 ${done ? 'text-amber2-600' : 'text-leaf-600'}`} aria-hidden="true" />
                   </div>
                   {done && (
                     <motion.span
@@ -105,7 +109,7 @@ export default function Challenges() {
                       animate={{ scale: 1 }}
                       className="text-2xl"
                     >
-                      <Trophy className="h-6 w-6 text-amber2-500" />
+                      <Trophy className="h-6 w-6 text-amber2-500" aria-hidden="true" />
                     </motion.span>
                   )}
                 </div>

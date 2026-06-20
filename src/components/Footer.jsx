@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Heart, Leaf, Lock } from 'lucide-react';
 import { todayISO } from '../lib/format';
 
+/** Site-wide footer with navigation links, privacy badge, and copyright. */
 export default function Footer() {
   return (
     <footer className="mt-20 border-t border-earth-200/60 dark:border-earth-800/60">
@@ -9,7 +10,7 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="flex items-center gap-2.5">
             <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-leaf-400 to-leaf-700 text-white">
-              <Leaf className="h-4 w-4" strokeWidth={2.5} />
+              <Leaf className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
             </span>
             <div className="leading-tight">
               <p className="text-sm font-bold text-earth-950 dark:text-white">Verdant</p>
@@ -36,14 +37,14 @@ export default function Footer() {
           </nav>
 
           <div className="flex items-center gap-2 rounded-full border border-earth-200 dark:border-earth-700 bg-white/60 dark:bg-earth-900/40 px-3 py-1.5 text-xs font-semibold text-earth-600 dark:text-earth-300">
-            <Lock className="h-3.5 w-3.5 text-leaf-500" />
+            <Lock className="h-3.5 w-3.5 text-leaf-500" aria-hidden="true" />
             100% local · no tracking
           </div>
         </div>
 
         <div className="mt-8 flex flex-col items-center gap-2 border-t border-earth-200/60 dark:border-earth-800/60 pt-6 text-center text-xs text-earth-400">
           <p className="flex items-center gap-1.5">
-            Built with <Heart className="h-3.5 w-3.5 text-amber2-500" fill="currentColor" /> for a
+            Built with <Heart className="h-3.5 w-3.5 text-amber2-500" fill="currentColor" aria-hidden="true" /> for a
             lighter planet. Emission estimates are approximate, for awareness.
           </p>
           <p>© {new Date().getFullYear()} Verdant · Session {todayISO()}</p>

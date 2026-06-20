@@ -17,7 +17,7 @@
 import { TOPICS, FALLBACKS } from '../data/knowledge';
 import { sanitize } from './security';
 import { biggestCategory, formatTonnes } from '../data/engine';
-import { WORLD_AVERAGE } from '../data/countries';
+import { WORLD_AVERAGE, PARIS_TARGET } from '../data/countries';
 import { dailyIndex } from './format';
 
 /**
@@ -73,8 +73,8 @@ function personalSummary(footprint) {
     `Your biggest source is **${big.label}** at ${formatTonnes(big.tonnes)}t, accounting for ${Math.round((big.kg / Math.max(1, footprint.totalKg)) * 100)}% of your total.`,
   ];
 
-  if (footprint.totalTonnes > 2.0) {
-    const gap = Math.round(footprint.totalTonnes - 2.0);
+  if (footprint.totalTonnes > PARIS_TARGET) {
+    const gap = Math.round(footprint.totalTonnes - PARIS_TARGET);
     lines.push(`To hit the Paris-aligned target of 2t, you'd need to cut about **${gap}t** — I can suggest specific actions on the Reduce page.`);
   } else {
     lines.push("You're already **below the Paris 2t target** — incredible work! 🎉");

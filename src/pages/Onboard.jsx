@@ -14,6 +14,11 @@ const stepVariants = {
   exit: (dir) => ({ x: dir > 0 ? -120 : 120, opacity: 0 }),
 };
 
+/**
+ * Onboarding survey wizard — 14-step lifestyle questionnaire that computes the
+ * user's annual carbon footprint estimate. Uses animated slide transitions and
+ * a live running estimate shown during the flow.
+ */
 export default function Onboard() {
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -137,7 +142,7 @@ export default function Onboard() {
                               : 'border-earth-300 dark:border-earth-600'
                           }`}
                         >
-                          {selected && <Check className="h-3.5 w-3.5" />}
+                          {selected && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
                         </div>
                         <div className="flex-1">
                           <p className={`font-semibold ${
@@ -171,7 +176,7 @@ export default function Onboard() {
             disabled={idx === 0}
             className="btn-ghost disabled:opacity-30 disabled:pointer-events-none"
           >
-            <ArrowLeft className="h-4 w-4" /> Back
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
           </button>
 
           <button
@@ -181,10 +186,10 @@ export default function Onboard() {
           >
             {isLast ? (
               <>
-                <Sparkles className="h-4 w-4" /> See My Footprint
+                <Sparkles className="h-4 w-4" aria-hidden="true" /> See My Footprint
               </>
             ) : (
-              <>Next <ArrowRight className="h-4 w-4" /></>
+              <>Next <ArrowRight className="h-4 w-4" aria-hidden="true" /></>
             )}
           </button>
         </div>

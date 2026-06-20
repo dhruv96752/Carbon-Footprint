@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LeafBackground from './components/LeafBackground';
+import ErrorBoundary from './components/ErrorBoundary';
 import { ToastProvider } from './components/ui/Toast';
 import Home from './pages/Home';
 import Onboard from './pages/Onboard';
@@ -45,7 +46,9 @@ export default function App() {
       <div className="relative flex min-h-screen flex-col">
         <Navbar />
         <main id="main-content" className="flex-1">
-          <AnimatedRoutes />
+          <ErrorBoundary>
+            <AnimatedRoutes />
+          </ErrorBoundary>
         </main>
         <Footer />
       </div>

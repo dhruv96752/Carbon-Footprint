@@ -1,14 +1,20 @@
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Check, Leaf, Sparkles } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 import actions, { rankActions, DIFFICULTY_LABEL } from '../data/actions';
-import { useProfile, useCommittedActions } from '../lib/store';
+import { useProfile, useCommittedActions, XP_REWARDS } from '../lib/store';
 import { useToast } from '../components/ui/Toast';
 import { fmt, fmtTonnes } from '../lib/format';
 import { triggerConfetti } from '../components/ui/Confetti';
 import PageTransition from '../components/PageTransition';
+import NotOnboarded from '../components/NotOnboarded';
 import Reveal, { Stagger, staggerItem } from '../components/ui/Reveal';
+
+// High-impact action badge threshold (kg CO2e/year saved).
+const HIGH_IMPACT_THRESHOLD = 500;
+
+// Confetti fires once the user commits their 3rd action.
+const CONFETTI_COMMIT_THRESHOLD = 2;
 
 const CAT_COLORS = {
   transport: 'bg-leaf-100 text-leaf-700 dark:bg-leaf-950 dark:text-leaf-300',
@@ -23,6 +29,11 @@ const DIFF_COLORS = {
   3: 'text-red-600',
 };
 
+/**
+ * Reduce page — personalised, ranked reduction actions based on the user's
+ * biggest emission categories. Users commit/uncommit actions to earn XP and
+ * track potential yearly savings. Requires a completed survey.
+ */
 export default function Reduce() {
   const profile = useProfile();
   const { footprint, hasCompleted, addXP } = profile;
@@ -37,25 +48,10 @@ export default function Reduce() {
 
   if (!hasCompleted || !footprint) {
     return (
-      <PageTransition className="min-h-screen">
-        <div className="mx-auto max-w-4xl px-4 py-20 text-center">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-          >
-            <Leaf className="mx-auto h-16 w-16 text-leaf-400 mb-4" />
-            <h1 className="text-3xl font-extrabold text-earth-950 dark:text-white mb-3">
-              Take the survey first
-            </h1>
-            <p className="text-earth-500 dark:text-earth-400 mb-8 max-w-md mx-auto">
-              We need your lifestyle data to recommend the most impactful actions for you.
-            </p>
-            <Link to="/onboard" className="btn-primary">
-              Start Survey <ArrowRight className="h-4 w-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </PageTransition>
+      <NotOnboarded
+        title="Take the survey first"
+        desc="We need your lifestyle data to recommend the most impactful actions for you."
+      />
     );
   }
 
@@ -68,13 +64,13 @@ export default function Reduce() {
     const wasCommitted = isCommitted(actionId);
     toggle(actionId);
     if (!wasCommitted) {
-      addXP(15);
-      toast.success('+15 XP — action committed!');
+      addXP(XP_REWARDS.ACTION_COMMIT);
+      toast.success(`+${XP_REWARDS.ACTION_COMMIT} XP — action committed!`);
     } else {
       toast.info('Action removed');
     }
     // Confetti on first 3 commits
-    if (!wasCommitted && committed.length === 2) {
+    if (!wasCommitted && committed.length === CONFETTI_COMMIT_THRESHOLD) {
       triggerConfetti();
     }
   };
@@ -97,7 +93,7 @@ export default function Reduce() {
         {committed.length > 0 && (
           <Reveal>
             <div className="card border-leaf-200 dark:border-leaf-900 bg-leaf-50/50 dark:bg-leaf-950/20 p-6 mb-8 text-center">
-              <Sparkles className="mx-auto h-8 w-8 text-amber2-500 mb-2" />
+              <Sparkles className="mx-auto h-8 w-8 text-amber2-500 mb-2" aria-hidden="true" />
               <p className="text-sm font-semibold text-leaf-600 dark:text-leaf-400">
                 {committed.length} action{committed.length !== 1 ? 's' : ''} committed
               </p>
@@ -147,9 +143,10 @@ export default function Reduce() {
                         ? 'border-leaf-500 bg-leaf-500 text-white'
                         : 'border-earth-300 dark:border-earth-600 hover:border-leaf-400'
                     }`}
-                    aria-label={done ? 'Uncommit' : 'Commit'}
+                    aria-label={done ? `Uncommit ${action.title}` : `Commit ${action.title}`}
+                    aria-pressed={done}
                   >
-                    {done && <Check className="h-4 w-4" />}
+                    {done && <Check className="h-4 w-4" aria-hidden="true" />}
                   </button>
                 </div>
                 <p className="text-sm text-earth-500 dark:text-earth-400 mb-3">{action.desc}</p>
@@ -157,7 +154,7 @@ export default function Reduce() {
                   <span className="text-leaf-600 dark:text-leaf-400">
                     Saves {fmt(action.savings)} kg CO₂/yr
                   </span>
-                  {action.savings > 500 && (
+                  {action.savings > HIGH_IMPACT_THRESHOLD && (
                     <span className="pill bg-amber2-100 text-amber2-700 dark:bg-amber2-950 dark:text-amber2-300 text-[10px]">
                       High impact
                     </span>

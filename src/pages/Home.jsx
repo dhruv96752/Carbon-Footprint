@@ -32,17 +32,17 @@ function GrowingTree({ level = 0, className = '' }) {
   // Each level adds more visual complexity
   const stages = [
     // Level 0: Seed
-    { trunkH: 0, crownR: 0, leaves: 0, color: '#bdb6a0' },
+    { label: 'Seed', trunkH: 0, crownR: 0, leaves: 0, color: '#bdb6a0' },
     // Level 1: Sprout
-    { trunkH: 20, crownR: 8, leaves: 3, color: '#8fd993' },
+    { label: 'Sprout', trunkH: 20, crownR: 8, leaves: 3, color: '#8fd993' },
     // Level 2: Sapling
-    { trunkH: 35, crownR: 16, leaves: 6, color: '#58bd61' },
+    { label: 'Sapling', trunkH: 35, crownR: 16, leaves: 6, color: '#58bd61' },
     // Level 3: Oak
-    { trunkH: 50, crownR: 26, leaves: 10, color: '#2fa039' },
+    { label: 'Oak', trunkH: 50, crownR: 26, leaves: 10, color: '#2fa039' },
     // Level 4: Guardian
-    { trunkH: 60, crownR: 34, leaves: 16, color: '#1c6623' },
+    { label: 'Guardian', trunkH: 60, crownR: 34, leaves: 16, color: '#1c6623' },
     // Level 5: Champion
-    { trunkH: 70, crownR: 42, leaves: 24, color: '#0d5f17' },
+    { label: 'Champion', trunkH: 70, crownR: 42, leaves: 24, color: '#0d5f17' },
   ];
 
   const s = stages[Math.min(level, stages.length - 1)];
@@ -53,6 +53,8 @@ function GrowingTree({ level = 0, className = '' }) {
     <motion.svg
       viewBox="0 0 100 100"
       className={`w-full max-w-[200px] ${className}`}
+      role="img"
+      aria-label={`Progress tree at ${s.label || 'Seed'} stage`}
       initial={{ scale: 0.85, opacity: 0.4 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
@@ -170,7 +172,7 @@ export default function Home() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-leaf-400 to-leaf-700 text-white shadow-glow">
-                <Leaf className="h-10 w-10" strokeWidth={2.5} />
+                <Leaf className="h-10 w-10" strokeWidth={2.5} aria-hidden="true" />
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-earth-950 dark:text-white mb-4">
                 Grow a{' '}
@@ -184,11 +186,11 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link to="/onboard" className="btn-primary text-base px-8 py-4">
-                  <Sparkles className="h-5 w-5" />
+                  <Sparkles className="h-5 w-5" aria-hidden="true" />
                   Start Your Journey
                 </Link>
                 <Link to="/privacy" className="btn-ghost text-base px-8 py-4">
-                  <Shield className="h-5 w-5" />
+                  <Shield className="h-5 w-5" aria-hidden="true" />
                   How It's Private
                 </Link>
               </div>
@@ -208,7 +210,7 @@ export default function Home() {
                   transition={{ delay: 0.3 + i * 0.15, duration: 0.6 }}
                   className="card p-6 text-left"
                 >
-                  <f.icon className="h-8 w-8 text-leaf-500 mb-3" />
+                  <f.icon className="h-8 w-8 text-leaf-500 mb-3" aria-hidden="true" />
                   <h3 className="font-bold text-earth-950 dark:text-white mb-1">{f.title}</h3>
                   <p className="text-sm text-earth-500 dark:text-earth-400">{f.desc}</p>
                 </motion.div>
@@ -269,11 +271,11 @@ export default function Home() {
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1.5 text-sm font-semibold text-earth-600 dark:text-earth-400">
-                      <Flame className="h-4 w-4 text-amber2-500" />
+                      <Flame className="h-4 w-4 text-amber2-500" aria-hidden="true" />
                       {streak} day streak
                     </div>
                     <div className="flex items-center gap-1.5 text-sm font-semibold text-earth-600 dark:text-earth-400">
-                      <Sparkles className="h-4 w-4 text-leaf-500" />
+                      <Sparkles className="h-4 w-4 text-leaf-500" aria-hidden="true" />
                       {xp} XP
                     </div>
                   </div>
@@ -296,11 +298,11 @@ export default function Home() {
               >
                 {checkedToday ? (
                   <span className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4" /> Checked in today!
+                    <CheckCircle2 className="h-4 w-4" aria-hidden="true" /> Checked in today!
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
-                    <Flame className="h-4 w-4" /> Daily Check-in
+                    <Flame className="h-4 w-4" aria-hidden="true" /> Daily Check-in
                   </span>
                 )}
               </motion.button>
@@ -311,7 +313,7 @@ export default function Home() {
         {/* Insight of the day */}
         <Reveal>
           <div className="card p-5 mb-8 flex items-start gap-4">
-            <span className="text-2xl">{todayInsight.icon}</span>
+            <span className="text-2xl" aria-hidden="true">{todayInsight.icon}</span>
             <div className="flex-1">
               <p className="text-sm font-semibold text-earth-500 dark:text-earth-400 mb-1">
                 Insight of the day
@@ -339,12 +341,12 @@ export default function Home() {
                 className="card p-4 flex items-center gap-3 transition-all hover:-translate-y-0.5 hover:shadow-lift group"
               >
                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-earth-100 dark:bg-earth-800 transition group-hover:bg-leaf-100 dark:group-hover:bg-leaf-950">
-                  <item.icon className={`h-5 w-5 ${item.color}`} />
+                  <item.icon className={`h-5 w-5 ${item.color}`} aria-hidden="true" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-earth-800 dark:text-earth-200">{item.label}</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-earth-400 transition group-hover:text-leaf-500 group-hover:translate-x-0.5" />
+                <ArrowRight className="h-4 w-4 text-earth-400 transition group-hover:text-leaf-500 group-hover:translate-x-0.5" aria-hidden="true" />
               </Link>
             ))}
           </div>
@@ -377,14 +379,14 @@ export default function Home() {
                 <div className={`grid h-10 w-10 place-items-center rounded-xl ${
                   isCompleted(ch.id) ? 'bg-amber2-100 dark:bg-amber2-950' : 'bg-leaf-100 dark:bg-leaf-950'
                 }`}>
-                  <Flame className={`h-5 w-5 ${isCompleted(ch.id) ? 'text-amber2-600' : 'text-leaf-600'}`} />
+                  <Flame className={`h-5 w-5 ${isCompleted(ch.id) ? 'text-amber2-600' : 'text-leaf-600'}`} aria-hidden="true" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-earth-800 dark:text-earth-200 truncate">{ch.title}</p>
                   <p className="text-xs text-earth-500">+{ch.xp} XP</p>
                 </div>
                 {isCompleted(ch.id) && (
-                  <CheckCircle2 className="h-5 w-5 text-amber2-500 shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-amber2-500 shrink-0" aria-hidden="true" />
                 )}
               </Link>
             ))}

@@ -1,6 +1,8 @@
 // Achievement badges — earned through streaks, actions committed,
 // footprint reduction milestones, and challenge completion.
 
+import { WORLD_AVERAGE, PARIS_TARGET } from './countries';
+
 export const LEVELS = [
   { id: 0, name: 'Seed',   minXP: 0,    icon: '🌱', color: '#bdb6a0' },
   { id: 1, name: 'Sprout', minXP: 100,  icon: '🌿', color: '#8fd993' },
@@ -101,14 +103,14 @@ export const BADGES = [
     desc: 'Get your footprint below your country average',
     icon: '🌍',
     condition: ({ totalTonnes, countryAvg }) =>
-      totalTonnes > 0 && totalTonnes < (countryAvg || 4.7),
+      totalTonnes > 0 && totalTonnes < (countryAvg || WORLD_AVERAGE),
   },
   {
     id: 'paris',
     name: 'Paris Aligned',
     desc: 'Reach the 2 tCO2e Paris target',
     icon: '🇫🇷',
-    condition: ({ totalTonnes }) => totalTonnes > 0 && totalTonnes <= 2.0,
+    condition: ({ totalTonnes }) => totalTonnes > 0 && totalTonnes <= PARIS_TARGET,
   },
 ];
 

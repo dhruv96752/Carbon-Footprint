@@ -7,9 +7,25 @@ import { todayISO } from './format';
 
 const PREFIX = 'verdant:';
 
+// ─── Tunable game constants ───────────────────────────────────────────────
+// Centralised so XP rewards are easy to tune without hunting through code.
+const XP_REWARDS = {
+  SURVEY_COMPLETE: 20,
+  CHECK_IN_BASE: 10,
+  STREAK_BONUS_CAP: 30,
+  ACTION_COMMIT: 15,
+};
+
 // ─── Profile store ────────────────────────────────────────────────────────
 // Central profile: survey answers, streak, XP, badges, computed footprint.
 
+/**
+ * Central user-profile hook. Aggregates survey answers, streak/XP state, the
+ * computed carbon footprint, derived level info, and earned badges into a
+ * single source of truth persisted to localStorage.
+ *
+ * @returns {object} Profile state + action callbacks.
+ */
 export function useProfile() {
   const [answers, setAnswers] = useLocalStorage(PREFIX + 'answers', {});
   const [completedAt, setCompletedAt] = useLocalStorage(PREFIX + 'completedAt', null);
@@ -48,24 +64,33 @@ export function useProfile() {
   const badges = evaluateBadges(badgeContext);
 
   // ── Actions ──
+  const addXP = (amount) => {
+    setXp((prev) => prev + amount);
+  };
+
   const completeSurvey = (surveyAnswers) => {
     setAnswers(surveyAnswers);
     setCompletedAt(new Date().toISOString());
-    addXP(20); // bonus XP for completing the survey
+    addXP(XP_REWARDS.SURVEY_COMPLETE); // bonus XP for completing the survey
   };
 
   // ── Streak management ──
   const checkIn = () => {
     const today = todayISO();
     if (lastCheckIn === today) return false; // already checked in today
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayISO = yesterday.toISOString().slice(0, 10);
+
+    // Compute yesterday's ISO date in LOCAL time (todayISO is already local).
+    const now = new Date();
+    const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+    const off = yesterday.getTimezoneOffset();
+    const yesterdayISO = new Date(yesterday.getTime() - off * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
 
     if (lastCheckIn === yesterdayISO) {
       // Consecutive day — extend streak
       setStreak((s) => s + 1);
-    } else if (lastCheckIn && lastCheckIn !== todayISO() && freezeUsed === false) {
+    } else if (lastCheckIn && lastCheckIn !== today && freezeUsed === false) {
       // Missed a day but have freeze available — use it
       setFreezeUsed(true);
       setStreak((s) => s + 1);
@@ -75,15 +100,11 @@ export function useProfile() {
       setFreezeUsed(false);
     }
     setLastCheckIn(today);
-    addXP(10 + Math.min(streak, 30)); // streak bonus XP
+    addXP(XP_REWARDS.CHECK_IN_BASE + Math.min(streak, XP_REWARDS.STREAK_BONUS_CAP)); // streak bonus XP
     return true;
   };
 
   const resetFreezeUsed = () => setFreezeUsed(false);
-
-  const addXP = (amount) => {
-    setXp((prev) => prev + amount);
-  };
 
   return {
     answers,
@@ -110,6 +131,11 @@ export function useProfile() {
 
 // ─── Committed actions store ─────────────────────────────────────────────
 
+/**
+ * Toggle/track which reduction actions the user has committed to.
+ *
+ * @returns {{ committed: string[], toggle: Function, isCommitted: Function }}
+ */
 export function useCommittedActions() {
   const [committed, setCommitted] = useLocalStorage(PREFIX + 'committed', []);
   const toggle = (actionId) =>
@@ -122,6 +148,11 @@ export function useCommittedActions() {
 
 // ─── Challenges progress store ────────────────────────────────────────────
 
+/**
+ * Track per-challenge progress and mark completed when the goal is met.
+ *
+ * @returns {{ progress: object, activeChallenges: object[], increment: Function, getProgress: Function, isCompleted: Function }}
+ */
 export function useChallenges() {
   const [progress, setProgress] = useLocalStorage(PREFIX + 'challenges', { completed: [], active: {} });
   const activeChallenges = getActiveChallenges();
@@ -151,6 +182,11 @@ export function useChallenges() {
 
 // ─── Chat history store ───────────────────────────────────────────────────
 
+/**
+ * Persist Sage chat history to localStorage.
+ *
+ * @returns {{ messages: object[], addMessage: Function, clearHistory: Function }}
+ */
 export function useChatHistory() {
   const [messages, setMessages] = useLocalStorage(PREFIX + 'chat', []);
   const addMessage = (msg) => {
@@ -163,4 +199,4 @@ export function useChatHistory() {
 }
 
 // Re-export hooks
-export { useLocalStorage, useInViewOnce, todayISO };
+export { useLocalStorage, useInViewOnce, todayISO, XP_REWARDS };

@@ -9,7 +9,7 @@
 // are rounded for clarity — this is an awareness tool, not an audit.
 
 import { STEPS, CATEGORIES, HOUSEHOLD_STEP_ID } from './survey';
-import { COUNTRY_AVERAGES, WORLD_AVERAGE } from './countries';
+import { COUNTRY_AVERAGES, WORLD_AVERAGE, PARIS_TARGET } from './countries';
 
 const KG_PER_TONNE = 1000;
 
@@ -63,7 +63,7 @@ export function calculateFootprint(answers = {}) {
     household,
     // Comparisons
     vsWorld: totalTonnes - WORLD_AVERAGE,
-    vsTarget: totalTonnes - 2.0, // Paris-aligned ~2 tCO2e per person by 2030
+    vsTarget: totalTonnes - PARIS_TARGET, // Paris-aligned ~2 tCO2e per person by 2030
   };
 }
 
@@ -81,7 +81,8 @@ export function savingsFor(totalKg, percent) {
 export function formatTonnes(tonnes) {
   if (tonnes >= 10) return tonnes.toFixed(1);
   if (tonnes >= 1) return tonnes.toFixed(2);
-  return tonnes.toFixed(2);
+  // Below 1 tonne, switch to kg for clarity (matches lib/format.js fmtTonnes).
+  return `${(tonnes * KG_PER_TONNE).toFixed(0)} kg`;
 }
 
-export { COUNTRY_AVERAGES, WORLD_AVERAGE, KG_PER_TONNE };
+export { COUNTRY_AVERAGES, WORLD_AVERAGE, KG_PER_TONNE, PARIS_TARGET };

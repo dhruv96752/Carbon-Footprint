@@ -17,6 +17,7 @@ import {
 import { useProfile } from '../lib/store';
 import { useTheme } from '../lib/hooks';
 
+/** Navigation items shown in both desktop and mobile menus. */
 const NAV = [
   { to: '/', label: 'Home', icon: Leaf },
   { to: '/breakdown', label: 'Footprint', icon: BarChart3 },
@@ -26,6 +27,10 @@ const NAV = [
   { to: '/privacy', label: 'Privacy', icon: Shield },
 ];
 
+/**
+ * Responsive top navigation bar with animated active indicator, streak/XP
+ * badges (post-onboard), dark-mode toggle, and a mobile slide-out drawer.
+ */
 export default function Navbar() {
   const { theme, toggle } = useTheme();
   const { streak, xp, level } = useProfile();
@@ -63,7 +68,7 @@ export default function Navbar() {
               whileHover={{ rotate: -8, scale: 1.08 }}
               className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-leaf-400 to-leaf-700 text-white shadow-soft"
             >
-              <Leaf className="h-5 w-5" strokeWidth={2.5} />
+              <Leaf className="h-5 w-5" strokeWidth={2.5} aria-hidden="true" />
             </motion.span>
             <span className="flex flex-col leading-none">
               <span className="text-lg font-extrabold tracking-tight text-earth-950 dark:text-white">
@@ -111,11 +116,11 @@ export default function Navbar() {
             {level.id > 0 && (
               <div className="hidden items-center gap-2 sm:flex">
                 <div className="flex items-center gap-1.5 rounded-full border border-earth-200 dark:border-earth-700 bg-white/60 dark:bg-earth-900/40 px-3 py-1.5 text-xs font-semibold text-earth-600 dark:text-earth-300">
-                  <Flame className="h-3.5 w-3.5 text-amber2-500" />
+                  <Flame className="h-3.5 w-3.5 text-amber2-500" aria-hidden="true" />
                   {streak}
                 </div>
                 <div className="flex items-center gap-1.5 rounded-full border border-earth-200 dark:border-earth-700 bg-white/60 dark:bg-earth-900/40 px-3 py-1.5 text-xs font-semibold text-earth-600 dark:text-earth-300">
-                  <Sparkles className="h-3.5 w-3.5 text-leaf-500" />
+                  <Sparkles className="h-3.5 w-3.5 text-leaf-500" aria-hidden="true" />
                   {xp} XP
                 </div>
               </div>
@@ -199,7 +204,7 @@ export default function Navbar() {
                         }`
                       }
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-5 w-5" aria-hidden="true" />
                       {item.label}
                     </NavLink>
                   </motion.div>
@@ -208,10 +213,10 @@ export default function Navbar() {
               {level.id > 0 && (
                 <div className="mt-3 flex items-center justify-center gap-3 border-t border-earth-200 dark:border-earth-800 pt-4 text-xs font-semibold text-earth-500">
                   <span className="flex items-center gap-1">
-                    <Flame className="h-4 w-4 text-amber2-500" /> {streak} day streak
+                    <Flame className="h-4 w-4 text-amber2-500" aria-hidden="true" /> {streak} day streak
                   </span>
                   <span className="flex items-center gap-1">
-                    <Sparkles className="h-4 w-4 text-leaf-500" /> {xp} XP
+                    <Sparkles className="h-4 w-4 text-leaf-500" aria-hidden="true" /> {xp} XP
                   </span>
                 </div>
               )}

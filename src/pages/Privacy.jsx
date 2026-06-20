@@ -16,6 +16,10 @@ import Modal from '../components/ui/Modal';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/ui/Reveal';
 
+/**
+ * Privacy & Security Center — explains Verdant's privacy-first architecture,
+ * shows a live data inventory, and provides one-click export/erase controls.
+ */
 export default function Privacy() {
   const [inventory] = useState(() => dataInventory());
   const [wipeModal, setWipeModal] = useState(false);
@@ -80,7 +84,7 @@ export default function Privacy() {
         <Reveal>
           <div className="text-center mb-12">
             <div className="mx-auto grid mb-4 h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-leaf-400 to-leaf-700 text-white shadow-soft">
-              <Shield className="h-8 w-8" strokeWidth={2} />
+              <Shield className="h-8 w-8" strokeWidth={2} aria-hidden="true" />
             </div>
             <h1 className="text-3xl sm:text-4xl font-extrabold text-earth-950 dark:text-white mb-3">
               Privacy & Security Center
@@ -104,7 +108,7 @@ export default function Privacy() {
                 transition={{ delay: i * 0.06 }}
                 className="card p-5"
               >
-                <Icon className="h-6 w-6 text-leaf-500 mb-3" />
+                <Icon className="h-6 w-6 text-leaf-500 mb-3" aria-hidden="true" />
                 <h3 className="font-bold text-earth-950 dark:text-white text-sm mb-1">{feat.title}</h3>
                 <p className="text-xs text-earth-500 dark:text-earth-400 leading-relaxed">{feat.desc}</p>
               </motion.div>
@@ -116,7 +120,7 @@ export default function Privacy() {
         <Reveal>
           <div className="card p-6 sm:p-8 mb-8">
             <h2 className="text-xl font-bold text-earth-950 dark:text-white mb-4 flex items-center gap-2">
-              <Database className="h-5 w-5 text-leaf-500" />
+              <Database className="h-5 w-5 text-leaf-500" aria-hidden="true" />
               Your Data Inventory
             </h2>
             <p className="text-sm text-earth-500 mb-4">
@@ -150,13 +154,13 @@ export default function Privacy() {
         <Reveal>
           <div className="flex flex-col sm:flex-row gap-4">
             <button onClick={handleExport} className="btn-ghost flex-1">
-              <Download className="h-4 w-4" /> Export All Data (JSON)
+              <Download className="h-4 w-4" aria-hidden="true" /> Export All Data (JSON)
             </button>
             <button
               onClick={() => setWipeModal(true)}
               className="btn-ghost flex-1 border-red-200 dark:border-red-900 text-red-600 hover:border-red-400 hover:text-red-700"
             >
-              <Trash2 className="h-4 w-4" /> Erase All Data
+              <Trash2 className="h-4 w-4" aria-hidden="true" /> Erase All Data
             </button>
           </div>
         </Reveal>
@@ -164,7 +168,7 @@ export default function Privacy() {
         {/* Wipe confirmation modal */}
         <Modal open={wipeModal} onClose={() => setWipeModal(false)} title="Erase all data?">
           <div className="flex items-start gap-3 mb-4">
-            <AlertTriangle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
+            <AlertTriangle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" aria-hidden="true" />
             <p className="text-sm text-earth-600 dark:text-earth-400">
               This will permanently delete all your Verdant data — footprint, streak, badges, chat history,
               everything. This action <strong>cannot be undone</strong>.
@@ -173,7 +177,7 @@ export default function Privacy() {
           <div className="flex gap-3 justify-end">
             <button onClick={() => setWipeModal(false)} className="btn-ghost">Cancel</button>
             <button onClick={handleWipe} className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-semibold text-white hover:bg-red-500 transition">
-              <Trash2 className="h-4 w-4" /> Yes, erase everything
+              <Trash2 className="h-4 w-4" aria-hidden="true" /> Yes, erase everything
             </button>
           </div>
         </Modal>

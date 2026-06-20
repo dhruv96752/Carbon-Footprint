@@ -64,18 +64,29 @@ export function exportAll() {
   a.href = url;
   a.download = `verdant-data-${new Date().toISOString().slice(0, 10)}.json`;
   document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  try {
+    a.click();
+  } finally {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 }
 
-/** Delete ALL Verdant data from localStorage. Irreversible. */
+/** Delete ALL Verdant data from localStorage. Irreversible. Returns the count removed. */
 export function wipeAll() {
   const toRemove = [];
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (key && key.startsWith(PREFIX)) toRemove.push(key);
   }
-  toRemove.forEach((key) => localStorage.removeItem(key));
-  return toRemove.length;
+  let removed = 0;
+  toRemove.forEach((key) => {
+    try {
+      localStorage.removeItem(key);
+      removed++;
+    } catch {
+      /* storage may be locked / quota-protected — skip silently */
+    }
+  });
+  return removed;
 }
