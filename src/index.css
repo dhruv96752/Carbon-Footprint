@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  * {
+    @apply border-earth-200 dark:border-earth-800;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-earth-50 text-earth-700 font-sans antialiased dark:bg-earth-950 dark:text-earth-300;
+    margin: 0;
+    min-height: 100vh;
+    background-image: theme('backgroundImage.mesh-light');
+    background-attachment: fixed;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  .dark body {
+    background-image: theme('backgroundImage.mesh-dark');
+  }
+  h1, h2, h3, h4 {
+    @apply text-earth-950 dark:text-white font-display;
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    @apply bg-leaf-500/25 text-leaf-900 dark:text-leaf-100;
+  }
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-earth-300 dark:bg-earth-700 rounded-full border-2 border-solid border-transparent bg-clip-content;
+  }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-leaf-400; }
+}
+
+@layer components {
+  /* Glass card surface */
+  .glass {
+    @apply bg-white/70 dark:bg-earth-900/60 backdrop-blur-xl border border-white/40 dark:border-white/5;
+  }
+  .card {
+    @apply rounded-2xl bg-white dark:bg-earth-900 border border-earth-100 dark:border-earth-800 shadow-soft;
+  }
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold;
+  }
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-gradient-to-r from-leaf-700 via-leaf-500 to-amber2-500 bg-clip-text text-transparent;
+  }
+  /* Primary button — magnetic + glow */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-leaf-600 px-5 py-3 text-sm font-semibold text-white shadow-soft transition-all duration-300 hover:bg-leaf-500 hover:shadow-glow hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-leaf-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-amber {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-amber2-500 px-5 py-3 text-sm font-semibold text-white shadow-soft transition-all duration-300 hover:bg-amber2-400 hover:shadow-amber hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber2-300 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-earth-200 dark:border-earth-700 bg-white/60 dark:bg-earth-900/40 px-5 py-3 text-sm font-semibold text-earth-700 dark:text-earth-200 transition-all duration-300 hover:border-leaf-400 hover:text-leaf-600 dark:hover:text-leaf-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-leaf-400;
+  }
+  .input {
+    @apply w-full rounded-xl border border-earth-200 dark:border-earth-700 bg-white/80 dark:bg-earth-900/60 px-4 py-3 text-sm text-earth-900 dark:text-earth-100 placeholder:text-earth-400 transition-all duration-200 focus:border-leaf-400 focus:ring-4 focus:ring-leaf-500/10 focus:outline-none;
+  }
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wide text-earth-500 dark:text-earth-400;
+  }
+}
+
+@layer utilities {
+  /* Skeleton shimmer */
+  .skeleton {
+    @apply relative overflow-hidden bg-earth-100 dark:bg-earth-800;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 1.6s infinite;
+  }
+  .dark .skeleton::after {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
